@@ -26,10 +26,10 @@ func main() {
 		Addr:    cfg.Adress,
 		Handler: router,
 	}
-
+	fmt.Println("Server started on port")
 	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatal("Failed to start server: ", err.Error())
 	}
-	fmt.Println("Server started on port", cfg.Adress)
+
 }
