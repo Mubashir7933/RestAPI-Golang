@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Mubashir7933/RestAPI-Golang/internal/config"
+	"github.com/Mubashir7933/RestAPI-Golang/internal/http/handlers/student"
 )
 
 func main() {
@@ -22,9 +23,7 @@ func main() {
 
 	router := http.NewServeMux()
 
-	router.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Welcome to Students API"))
-	})
+	router.HandleFunc("POST /api/students", student.New())
 	// setup Server
 
 	server := http.Server{
