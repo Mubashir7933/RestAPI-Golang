@@ -9,7 +9,7 @@ import (
 )
 
 type HTTPServer struct {
-	Adress string
+	Adress string `yaml:"address" env-required:"true"`
 }
 
 // We'll give structs tags to the entities of struct to extract contents from yaml file
