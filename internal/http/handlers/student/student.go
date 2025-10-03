@@ -28,7 +28,12 @@ func New() http.HandlerFunc {
 		}
 
 		//request validation
-		validator.New().Struct(student)
+		if err := validator.New().Struct(student); err != nil {
+
+			validateErrs := err.(validator.ValidationErrors)
+			response.WriteJSON(w, http.StatusBadRequest, response.ValidationError(validateErrs))
+			return
+		}
 
 		// log the student data
 		slog.Info("Student Data", slog.Any("student", student))
