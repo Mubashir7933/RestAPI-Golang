@@ -7,6 +7,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"strconv"
 
 	"github.com/Mubashir7933/RestAPI-Golang/internal/storage"
 	"github.com/Mubashir7933/RestAPI-Golang/internal/types"
@@ -55,5 +56,20 @@ func GetById(storage storage.Storage) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := r.PathValue("id")
 		slog.Info("GetById handler called", slog.String("id", id))
+
+		intId, err := strconv.ParseInt(id, 10, 64)
+		if err != nil {
+			response.WriteJSON(w, http.StatusBadRequest, response.GeneralError(err))
+			return
+		}
+
+		student, e := storage.GetStudentById(intId)
+		if e != nil {
+			slog.Error("Error while fetching the student id", slog.String("id", id), slog.String("error", e.Error()))
+			response.WriteJSON(w, http.StatusInternalServerError, response.GeneralError(e))
+			return
+		}
+		response.WriteJSON(w, http.StatusOK, student)
+
 	}
 }
